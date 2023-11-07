@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+Crear Gatito
+{% endblock titulo %}
+
+{% block contenido %}
+<form method="post">
+    {% csrf_token %}
+    {{ formulario.as_p }}
+    <input class="btn btn-success" type="submit" value="Subir Gatito" />
+</form>
+<br>
+<a href="{% url 'mostrar_gatitos' %}">Volver a la lista</a>
+{% endblock contenido %}
