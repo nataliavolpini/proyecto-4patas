@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.db.models import Q
+#Importo para las clases
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
 
 # Create your views here.
 from .models import Perro
@@ -14,6 +17,7 @@ def mostrar_perritos(request):
     # Enviamos esos datos al archivo html por el contexto
     return render(request, 'listar_perritos.html', {"perritos": perritos})
 
+#No usaremos crear_perritos
 def crear_perritos(request):
     if request.method == "POST":
         formulario = PerroFormulario(request.POST)
@@ -155,3 +159,30 @@ def buscar_caballo(request):
             context=contexto,
         )
         return http_response          
+
+
+# Vistas de Perritos(basadas en clases)
+class PerroListView(ListView):
+    model = Perro
+    template_name = 'listar_perritos.html'
+
+class PerroCreateView(CreateView):
+    model = Perro
+    fields = ('nombre', 'raza', 'fecha_nacimiento', 'descripción')
+    success_url = reverse_lazy('listar_perritos')
+
+
+class PerroDetailView(DetailView):
+    model = Perro
+    success_url = reverse_lazy('listar_perritos')
+
+
+class PerroUpdateView(UpdateView):
+    model = Perro
+    fields = ('nombre', 'raza', 'fecha_nacimiento', 'descripción')
+    success_url = reverse_lazy('listar_perritos')
+
+
+class PerroDeleteView(DeleteView):
+    model = Perro
+    success_url = reverse_lazy('listar_perritos')    
